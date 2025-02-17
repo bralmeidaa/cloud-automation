@@ -3,6 +3,9 @@ param (
     [string[]]$CustomPorts
 )
 
+# Convert the string of ports into an array
+$CustomPorts = $CustomPorts -split ','
+
 # Check and install IIS and Telnet if necessary
 $features = @("Web-Server", "Web-Mgmt-Console", "Telnet-Client")
 foreach ($feature in $features) {
