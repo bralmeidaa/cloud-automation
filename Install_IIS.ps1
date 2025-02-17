@@ -1,3 +1,8 @@
+# Parameter to receive the ports
+param (
+    [string[]]$CustomPorts
+)
+
 # Check and install IIS and Telnet if necessary
 $features = @("Web-Server", "Web-Mgmt-Console", "Telnet-Client")
 foreach ($feature in $features) {
@@ -6,14 +11,10 @@ foreach ($feature in $features) {
     }
 }
 
-# Parameter to receive the ports
-param (
-    [string[]]$CustomPorts
-)
 
 # Add ports to IIS
 Import-Module WebAdministration
-if (-not (Test-Path IIS:\Sites\Default Web Site)) {
+if (-not (Test-Path IIS:\Sites\'Default Web Site')) {
     New-Website -Name "Default Web Site" -Port 80 -PhysicalPath "C:\inetpub\wwwroot"
 }
 
@@ -24,7 +25,7 @@ foreach ($port in $CustomPorts) {
 }
 
 # Configure HTTPS with the correct certificate
-$certs = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "TentantEncryptCert" }
+$certs = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "TenantEncryptionCert" }
 if ($certs.Count -gt 0) {
     $cert = $certs | Select-Object -First 1
     if (-not (Get-WebBinding -Name "Default Web Site" | Where-Object { $_.bindingInformation -match ":443:" })) {
