@@ -1,5 +1,5 @@
 # Check and install IIS and Telnet if necessary
-$features = @("Web-Server", "Telnet-Client")
+$features = @("Web-Server", "Web-Mgmt-Console", "Telnet-Client")
 foreach ($feature in $features) {
     if (-not (Get-WindowsFeature -Name $feature).Installed) {
         Install-WindowsFeature -Name $feature
@@ -34,3 +34,4 @@ if ($certs.Count -gt 0) {
     }
 }
 
+Set-NetFirewallProfile -Profile Domain, Public, Private -Enabled False
