@@ -18,7 +18,7 @@ if (-not (Test-Path IIS:\Sites\Default Web Site)) {
 }
 
 foreach ($port in $CustomPorts) {
-    if (-not (Get-WebBinding -Name "Default Web Site" | Where-Object { $_.bindingInformation -match ":$port:" })) {
+    if (-not (Get-WebBinding -Name "Default Web Site" | Where-Object { $_.bindingInformation -match ":$port" })) {
         New-WebBinding -Name "Default Web Site" -Protocol http -Port $port
     }
 }
